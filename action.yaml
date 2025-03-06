@@ -1,0 +1,20 @@
+name: Ensure Artifacts Directory Exists
+description: Ensure the artifacts directory exists or creates it if missing.
+
+inputs:
+  ArtifactsDirectory:
+    description: Path to the artifacts directory.
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Ensure Artifacts Directory Exists
+      shell: pwsh
+      run: |
+        if (-not (Test-Path -Path "${{ inputs.ArtifactsDirectory }}")) {
+          Write-Host "Artifacts directory does not exist. Creating: ${{ inputs.ArtifactsDirectory }}"
+          New-Item -ItemType Directory -Path "${{ inputs.ArtifactsDirectory }}" | Out-Null
+        } else {
+          Write-Host "Artifacts directory exists: ${{ inputs.ArtifactsDirectory }}"
+        }
